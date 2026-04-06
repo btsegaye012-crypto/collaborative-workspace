@@ -137,3 +137,68 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+import express from 'express';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import cors from 'cors';
+
+const app = express();
+app.use(cors());
+
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+      origin: "*", 
+          methods: ["GET", "POST"]
+            }
+            });
+
+            io.on('connection', (socket) => {
+              console.log('አዲስ ተጠቃሚ ገብቷል:', socket.id);
+
+                // ዶክመንቱ ላይ ለውጥ ሲደረግ ለሌሎች ያሰራጫል
+                  socket.on('send-changes', (delta) => {
+                      socket.broadcast.emit('receive-changes', delta);
+                        });
+
+                          socket.on('disconnect', () => {
+                              console.log('ተጠቃሚ ወጥቷል');
+                                });
+                                });
+
+                                const PORT = 5000;
+                                httpServer.listen(PORT, () => {
+                                  console.log(`ሰርቨሩ በፖርት ${PORT} ላይ እየሰራ ነው`);
+                                  });
+                     import express from 'express';
+                     import { createServer } from 'http';
+                     import { Server } from 'socket.io';
+                     import cors from 'cors';
+
+                     const app = express();
+                     app.use(cors());
+
+                     const httpServer = createServer(app);
+                     const io = new Server(httpServer, {
+                       cors: {
+                           origin: "*", 
+                               methods: ["GET", "POST"]
+                                 }
+                                 });
+
+                                 io.on('connection', (socket) => {
+                                   console.log('አዲስ ተጠቃሚ ገብቷል:', socket.id);
+
+                                     socket.on('send-changes', (delta) => {
+                                         socket.broadcast.emit('receive-changes', delta);
+                                           });
+
+                                             socket.on('disconnect', () => {
+                                                 console.log('ተጠቃሚ ወጥቷል');
+                                                   });
+                                                   });
+
+                                                   const PORT = 5000;
+                                                   httpServer.listen(PORT, () => {
+                                                     console.log(`ሰርቨሩ በፖርት ${PORT} ላይ እየሰራ ነው`);
+                                                     });             
